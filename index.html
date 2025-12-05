@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famous Scientists Quotes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .quote-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .quote-text {
+            font-size: 1.4em;
+            line-height: 1.6;
+            color: #333;
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .quote-text::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            top: -10px;
+            font-size: 3em;
+            color: #667eea;
+            opacity: 0.3;
+        }
+        
+        .author {
+            font-size: 1.2em;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .field {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .explanation {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .explanation strong {
+            color: #333;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background: #667eea;
+            color: white;
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .counter {
+            text-align: center;
+            color: white;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💡 Wisdom from Great Minds</h1>
+        
+        <div class="controls">
+            <button onclick="previousQuote()">← Previous</button>
+            <button onclick="randomQuote()">🎲 Random</button>
+            <button onclick="nextQuote()">Next →</button>
+        </div>
+        
+        <div id="quoteCard" class="quote-card"></div>
+        
+        <div class="counter" id="counter"></div>
+    </div>
+
+    <script>
+        const quotes = [
+            {
+                quote: "Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Einstein believed that being creative and thinking of new ideas is more valuable than just memorizing facts. Facts are limited to what we already know, but imagination lets us discover new things and solve problems we've never seen before."
+            },
+            {
+                quote: "If I have seen further it is by standing on the shoulders of giants.",
+                author: "Isaac Newton",
+                field: "Classical Mechanics",
+                explanation: "Newton humbly said his discoveries were possible because he learned from great scientists before him. Like standing on a tall person's shoulders lets you see farther, learning from past knowledge helps us make new discoveries."
+            },
+            {
+                quote: "An expert is a person who has made all the mistakes that can be made in a very narrow field.",
+                author: "Niels Bohr",
+                field: "Quantum Mechanics",
+                explanation: "Becoming an expert means you've tried many things and failed many times in your specialty. These failures taught you what works and what doesn't, making you wise in that area."
+            },
+            {
+                quote: "Science knows no country, because knowledge belongs to humanity, and is the torch which illuminates the world.",
+                author: "Louis Pasteur",
+                field: "Microbiology",
+                explanation: "Scientific discoveries don't belong to just one nation—they benefit all people everywhere. Knowledge is like a light that helps everyone see and understand the world better, no matter where they live."
+            },
+            {
+                quote: "The good thing about science is that it's true whether or not you believe in it.",
+                author: "Neil deGrasse Tyson",
+                field: "Astrophysics",
+                explanation: "Scientific facts remain true even if people don't accept them. For example, gravity works whether you believe in it or not. Science is based on evidence and testing, not opinions."
+            },
+            {
+                quote: "Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less.",
+                author: "Marie Curie",
+                field: "Radioactivity",
+                explanation: "When we learn about things that scare us, they become less frightening. Understanding how things work gives us power and confidence instead of fear."
+            },
+            {
+                quote: "The important thing is not to stop questioning. Curiosity has its own reason for existing.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Always keep asking questions and being curious about the world. The desire to learn and understand is valuable in itself and drives all human progress."
+            },
+            {
+                quote: "In science there is only physics; all the rest is stamp collecting.",
+                author: "Ernest Rutherford",
+                field: "Nuclear Physics",
+                explanation: "Rutherford jokingly suggested that physics is the most fundamental science because it explains how everything works at the deepest level, while other sciences just categorize and organize things."
+            },
+            {
+                quote: "It is not the strongest of the species that survives, nor the most intelligent, but the one most responsive to change.",
+                author: "Charles Darwin",
+                field: "Evolutionary Theory",
+                explanation: "Survival isn't about being the biggest or smartest—it's about adapting to new situations. Those who can adjust when their environment changes are the ones who succeed."
+            },
+            {
+                quote: "We are just an advanced breed of monkeys on a minor planet of a very average star. But we can understand the Universe. That makes us something very special.",
+                author: "Stephen Hawking",
+                field: "Theoretical Physics",
+                explanation: "Humans may seem small and insignificant in the vast universe, but our ability to understand complex things like physics and mathematics makes us unique and remarkable."
+            },
+            {
+                quote: "One, remember to look up at the stars and not down at your feet. Two, never give up work. Work gives you meaning and purpose.",
+                author: "Stephen Hawking",
+                field: "Theoretical Physics",
+                explanation: "Stay curious about the big questions in life (look at the stars), and keep yourself busy with meaningful work. Having purpose makes life fulfilling."
+            },
+            {
+                quote: "A little knowledge is a dangerous thing. Drink deep, or taste not the Pierian spring.",
+                author: "Alexander Pope",
+                field: "Literature/Philosophy",
+                explanation: "Having only a small amount of knowledge about something can be harmful because you might think you know more than you do. Either learn deeply about a subject or don't pretend to know it."
+            },
+            {
+                quote: "The scientist is not a person who gives the right answers, he's one who asks the right questions.",
+                author: "Claude Lévi-Strauss",
+                field: "Anthropology",
+                explanation: "Good scientists don't just have answers—they know what questions to ask. Asking the right questions is the first step to making important discoveries."
+            },
+            {
+                quote: "Mathematics is the language in which God has written the universe.",
+                author: "Galileo Galilei",
+                field: "Astronomy",
+                explanation: "The universe follows mathematical rules and patterns. To understand how nature works, we need to understand mathematics—it's the language of the cosmos."
+            },
+            {
+                quote: "The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom.",
+                author: "Isaac Asimov",
+                field: "Science Fiction/Science",
+                explanation: "We're discovering new things very quickly, but we're not learning fast enough how to use this knowledge wisely for the good of everyone."
+            },
+            {
+                quote: "First, do no harm.",
+                author: "Hippocrates",
+                field: "Medicine",
+                explanation: "This ancient medical principle means that before trying to help someone, make sure you don't make things worse. It's better to do nothing than to cause damage."
+            },
+            {
+                quote: "The greatest enemy of knowledge is not ignorance, it is the illusion of knowledge.",
+                author: "Stephen Hawking",
+                field: "Theoretical Physics",
+                explanation: "Not knowing something isn't as bad as thinking you know something when you don't. False confidence prevents you from learning the truth."
+            },
+            {
+                quote: "Somewhere, something incredible is waiting to be known.",
+                author: "Carl Sagan",
+                field: "Astronomy",
+                explanation: "There are amazing discoveries still waiting to be found. This should inspire us to keep exploring and learning about our world and universe."
+            },
+            {
+                quote: "The measure of intelligence is the ability to change.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Being smart isn't about knowing everything—it's about being flexible and willing to change your mind when you learn new information."
+            },
+            {
+                quote: "I think, therefore I am.",
+                author: "René Descartes",
+                field: "Philosophy/Mathematics",
+                explanation: "The fact that you can think and doubt proves that you exist. This is the most basic truth we can know with certainty."
+            },
+            {
+                quote: "In questions of science, the authority of a thousand is not worth the humble reasoning of a single individual.",
+                author: "Galileo Galilei",
+                field: "Astronomy",
+                explanation: "In science, it doesn't matter how many people believe something—what matters is evidence and logical thinking. One person with good evidence is more valuable than a thousand people just following tradition."
+            },
+            {
+                quote: "What we know is a drop, what we don't know is an ocean.",
+                author: "Isaac Newton",
+                field: "Classical Mechanics",
+                explanation: "All of human knowledge is tiny compared to what we still don't understand. No matter how much we learn, there's always vastly more to discover."
+            },
+            {
+                quote: "The fundamental concept in social science is Power, in the same sense in which Energy is the fundamental concept in physics.",
+                author: "Bertrand Russell",
+                field: "Philosophy/Logic",
+                explanation: "Just as energy is the key to understanding how the physical world works, power (influence and control) is the key to understanding how human societies work."
+            },
+            {
+                quote: "Give me a lever long enough and a fulcrum on which to place it, and I shall move the world.",
+                author: "Archimedes",
+                field: "Mathematics/Physics",
+                explanation: "With the right tools and proper technique, even huge tasks become possible. This illustrates the principle of leverage—a small force can move something enormous if applied correctly."
+            },
+            {
+                quote: "The most incomprehensible thing about the world is that it is comprehensible.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "It's amazing and mysterious that humans can actually understand the universe through science and mathematics. The fact that nature follows rules we can figure out is itself remarkable."
+            },
+            {
+                quote: "Science is organized knowledge. Wisdom is organized life.",
+                author: "Immanuel Kant",
+                field: "Philosophy",
+                explanation: "Science helps us understand facts and how things work, but wisdom is about knowing how to live well and make good choices in life."
+            },
+            {
+                quote: "The nitrogen in our DNA, the calcium in our teeth, the iron in our blood was made in the interiors of collapsing stars. We are made of star stuff.",
+                author: "Carl Sagan",
+                field: "Astronomy",
+                explanation: "Every atom in our bodies (except hydrogen) was created inside stars billions of years ago. When stars exploded, they scattered these elements across space, eventually forming planets and life. We are literally made from ancient stars."
+            },
+            {
+                quote: "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Einstein humorously noted that while we don't know if the universe is truly infinite, human foolishness seems to have no limits. People keep making the same mistakes throughout history."
+            },
+            {
+                quote: "I am among those who think that science has great beauty.",
+                author: "Marie Curie",
+                field: "Radioactivity",
+                explanation: "Science isn't just practical—it's beautiful. Discovering how nature works and understanding the patterns in the universe can be as moving as art or music."
+            },
+            {
+                quote: "The good physician treats the disease; the great physician treats the patient who has the disease.",
+                author: "William Osler",
+                field: "Medicine",
+                explanation: "A decent doctor focuses on curing the illness, but an excellent doctor treats the whole person—understanding their emotions, life circumstances, and individual needs, not just their symptoms."
+            },
+            {
+                quote: "We cannot solve our problems with the same thinking we used when we created them.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "If your old way of thinking caused a problem, you need to think differently to fix it. You can't solve issues by repeating the same patterns that created them."
+            },
+            {
+                quote: "Pure mathematics is, in its way, the poetry of logical ideas.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Mathematics has its own beauty and elegance, like poetry. The logical patterns and relationships in math can be as creative and inspiring as art."
+            },
+            {
+                quote: "In science, credit goes to the man who convinces the world, not to the man to whom the idea first occurs.",
+                author: "Francis Darwin",
+                field: "Biology",
+                explanation: "Having an idea first doesn't matter if you can't communicate it effectively. The scientist who can explain and prove their discovery to others gets remembered in history."
+            },
+            {
+                quote: "Nature does not hurry, yet everything is accomplished.",
+                author: "Lao Tzu",
+                field: "Philosophy",
+                explanation: "Natural processes take their time but always achieve their goals. Rivers carve canyons slowly, seeds grow into trees gradually. Patience and steady progress work better than rushing."
+            },
+            {
+                quote: "The whole is greater than the sum of its parts.",
+                author: "Aristotle",
+                field: "Philosophy",
+                explanation: "When things come together, they create something more valuable than just adding them up separately. A team can accomplish more than individuals working alone, a car is more than just piles of parts."
+            },
+            {
+                quote: "Science without religion is lame, religion without science is blind.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Einstein believed science and spirituality both have value. Science without moral guidance lacks purpose, while faith without evidence lacks understanding. They can complement each other."
+            },
+            {
+                quote: "An experiment is a question which science poses to Nature, and a measurement is the recording of Nature's answer.",
+                author: "Max Planck",
+                field: "Quantum Mechanics",
+                explanation: "When scientists do experiments, they're asking nature specific questions. The results they measure are nature's way of giving answers. Science is a conversation with the natural world."
+            },
+            {
+                quote: "All truths are easy to understand once they are discovered; the point is to discover them.",
+                author: "Galileo Galilei",
+                field: "Astronomy",
+                explanation: "Once someone explains a discovery, it often seems obvious. The hard part is being the first person to figure it out. Many 'obvious' things weren't obvious until someone proved them."
+            },
+            {
+                quote: "If we knew what it was we were doing, it would not be called research.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Research means exploring the unknown. If we already knew exactly what we were doing and what we'd find, it wouldn't be research—it would just be following instructions."
+            },
+            {
+                quote: "The only way to learn mathematics is to do mathematics.",
+                author: "Paul Halmos",
+                field: "Mathematics",
+                explanation: "You can't learn math just by reading or watching—you have to practice solving problems yourself. Like learning to swim, you must actually do it to truly understand it."
+            },
+            {
+                quote: "Not everything that can be counted counts, and not everything that counts can be counted.",
+                author: "William Bruce Cameron",
+                field: "Sociology",
+                explanation: "Some things that are easy to measure aren't very important, and some of the most important things (like love, happiness, wisdom) are hard to measure with numbers."
+            },
+            {
+                quote: "The more I study science, the more I believe in God.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "For Einstein, learning about the incredible order and beauty in the universe made him believe there was something greater behind it all. Science revealed the magnificence of creation."
+            },
+            {
+                quote: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
+                author: "Aristotle",
+                field: "Philosophy",
+                explanation: "Who you are is defined by your daily actions, not one-time achievements. To be excellent at something, you need to practice it regularly until it becomes automatic."
+            },
+            {
+                quote: "I have not failed. I've just found 10,000 ways that won't work.",
+                author: "Thomas Edison",
+                field: "Invention/Electricity",
+                explanation: "Edison didn't see his mistakes as failures—each attempt taught him what doesn't work, bringing him closer to the solution. Persistence and learning from errors lead to success."
+            },
+            {
+                quote: "The universe is not only stranger than we imagine, it is stranger than we can imagine.",
+                author: "J.B.S. Haldane",
+                field: "Biology",
+                explanation: "The universe contains things so bizarre and amazing that they're beyond our current ability to even think of. Reality is weirder than the wildest science fiction."
+            },
+            {
+                quote: "In the middle of difficulty lies opportunity.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Challenges and problems contain hidden opportunities. When things are difficult, that's often when we can make the most progress or learn the most valuable lessons."
+            },
+            {
+                quote: "Study the science of art. Study the art of science. Learn how to see. Realize that everything connects to everything else.",
+                author: "Leonardo da Vinci",
+                field: "Art/Science/Engineering",
+                explanation: "Don't separate art and science—they're connected. Learn to observe carefully and understand that all knowledge is interconnected. A scientist needs creativity, and an artist needs to understand how things work."
+            },
+            {
+                quote: "The only true wisdom is in knowing you know nothing.",
+                author: "Socrates",
+                field: "Philosophy",
+                explanation: "Recognizing how much you don't know is actually wise. People who think they know everything stop learning. Admitting ignorance is the first step to gaining real knowledge."
+            },
+            {
+                quote: "Logic will get you from A to B. Imagination will take you everywhere.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Logical thinking is useful for solving known problems, but imagination and creativity allow you to discover entirely new possibilities and go beyond current limitations."
+            },
+            {
+                quote: "Science is a way of thinking much more than it is a body of knowledge.",
+                author: "Carl Sagan",
+                field: "Astronomy",
+                explanation: "Science isn't just a collection of facts to memorize—it's a method of asking questions, testing ideas, and being open to changing your mind based on evidence."
+            },
+            {
+                quote: "The important thing in science is not so much to obtain new facts as to discover new ways of thinking about them.",
+                author: "William Lawrence Bragg",
+                field: "Physics",
+                explanation: "Finding new information is good, but what really advances science is finding new perspectives and connections that help us understand what the facts mean."
+            },
+            {
+                quote: "Research is what I'm doing when I don't know what I'm doing.",
+                author: "Wernher von Braun",
+                field: "Rocket Science",
+                explanation: "True research means exploring the unknown. If you already know what you're doing, you're just applying existing knowledge, not discovering anything new."
+            },
+            {
+                quote: "I never teach my pupils, I only attempt to provide the conditions in which they can learn.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "You can't force someone to learn—you can only create an environment where they're curious and motivated to discover things themselves. Real learning comes from within."
+            },
+            {
+                quote: "The scientist does not study nature because it is useful; he studies it because he delights in it.",
+                author: "Henri Poincaré",
+                field: "Mathematics",
+                explanation: "The best scientists aren't motivated by practical benefits—they study nature because they find it fascinating and beautiful. Curiosity and joy drive discovery more than usefulness."
+            },
+            {
+                quote: "Every great advance in science has issued from a new audacity of imagination.",
+                author: "John Dewey",
+                field: "Philosophy/Education",
+                explanation: "Major scientific breakthroughs happen when someone is brave enough to imagine something completely different from what everyone else believes. Bold thinking leads to big discoveries."
+            },
+            {
+                quote: "Science is the father of knowledge, but opinion breeds ignorance.",
+                author: "Hippocrates",
+                field: "Medicine",
+                explanation: "Science gives us real understanding based on evidence and testing, while just having opinions without facts leads to misunderstanding and false beliefs."
+            },
+            {
+                quote: "The essence of mathematics is not to make simple things complicated, but to make complicated things simple.",
+                author: "Stan Gudder",
+                field: "Mathematics",
+                explanation: "Good mathematics takes complex problems and finds elegant, simple solutions. Math is about finding clarity and simplicity in what seems confusing."
+            },
+            {
+                quote: "Facts are the air of scientists. Without them you can never fly.",
+                author: "Linus Pauling",
+                field: "Chemistry",
+                explanation: "Scientists need solid facts and data the way birds need air. Without evidence and information, scientific ideas can't take off or succeed."
+            },
+            {
+                quote: "In science, read the newest works; in literature, the oldest.",
+                author: "Edward Bulwer-Lytton",
+                field: "Literature",
+                explanation: "Science constantly updates with new discoveries, so read the latest research. But great literature stays valuable forever, so read the classics that have stood the test of time."
+            },
+            {
+                quote: "The art of being wise is knowing what to overlook.",
+                author: "William James",
+                field: "Psychology",
+                explanation: "Being smart isn't about paying attention to everything—it's about knowing what's important and what you can ignore. Focus on what matters."
+            },
+            {
+                quote: "Equipped with his five senses, man explores the universe around him and calls the adventure Science.",
+                author: "Edwin Hubble",
+                field: "Astronomy",
+                explanation: "Science is humanity's grand adventure of using our eyes, ears, touch, taste, and smell to investigate and understand everything in the universe around us."
+            },
+            {
+                quote: "The best way to predict the future is to invent it.",
+                author: "Alan Kay",
+                field: "Computer Science",
+                explanation: "Don't just wait to see what happens—actively create the future you want. Innovation and action shape tomorrow more than prediction does."
+            },
+            {
+                quote: "Truth is ever to be found in simplicity, and not in the multiplicity and confusion of things.",
+                author: "Isaac Newton",
+                field: "Classical Mechanics",
+                explanation: "The real truth is usually simple and elegant. When things seem overly complicated and confusing, you probably haven't found the true answer yet."
+            },
+            {
+                quote: "I seem to have been only like a boy playing on the seashore, finding a smoother pebble or a prettier shell, whilst the great ocean of truth lay all undiscovered before me.",
+                author: "Isaac Newton",
+                field: "Classical Mechanics",
+                explanation: "Even though Newton made huge discoveries, he felt like he'd barely scratched the surface. All his achievements were like finding a few shells on a beach, while an entire ocean of knowledge remained unexplored."
+            },
+            {
+                quote: "It is not the strongest species that survive, nor the most intelligent, but the ones most responsive to change.",
+                author: "Leon C. Megginson (paraphrasing Darwin)",
+                field: "Evolutionary Theory",
+                explanation: "Success comes from adaptability, not strength or intelligence alone. Those who can adjust to new situations and environments are the ones who thrive."
+            },
+            {
+                quote: "Nature never breaks her own laws.",
+                author: "Leonardo da Vinci",
+                field: "Art/Science/Engineering",
+                explanation: "The laws of nature are consistent and reliable. Physics, chemistry, and biology work the same way every time—nature doesn't make exceptions or break its own rules."
+            },
+            {
+                quote: "The scientist is motivated primarily by curiosity and a desire for truth.",
+                author: "Irving Langmuir",
+                field: "Chemistry",
+                explanation: "What drives scientists most isn't money or fame—it's the deep need to know how things work and to uncover what's really true about the world."
+            },
+            {
+                quote: "There are no such things as applied sciences, only applications of science.",
+                author: "Louis Pasteur",
+                field: "Microbiology",
+                explanation: "Science itself is pure discovery and understanding. What we call 'applied science' is just using scientific knowledge for practical purposes. The science remains the same."
+            },
+            {
+                quote: "Mathematics is the queen of sciences.",
+                author: "Carl Friedrich Gauss",
+                field: "Mathematics",
+                explanation: "Gauss believed mathematics is the most fundamental and beautiful of all sciences—it's the foundation that all other sciences depend on."
+            },
+            {
+                quote: "In mathematics you don't understand things. You just get used to them.",
+                author: "John von Neumann",
+                field: "Mathematics",
+                explanation: "Sometimes in math, concepts seem strange at first. You may not fully grasp why something works, but after working with it enough, it becomes familiar and natural."
+            },
+            {
+                quote: "A theory is something nobody believes, except the person who made it. An experiment is something everybody believes, except the person who made it.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "People are skeptical of theories because they're just ideas, but the theorist believes in their own work. With experiments, everyone trusts the results except the experimenter, who knows all the ways it could have gone wrong."
+            },
+            {
+                quote: "The opposite of a correct statement is a false statement. But the opposite of a profound truth may well be another profound truth.",
+                author: "Niels Bohr",
+                field: "Quantum Mechanics",
+                explanation: "Simple facts are either true or false. But deep truths about life and the universe can be complex—sometimes two opposite ideas can both contain truth depending on perspective."
+            },
+            {
+                quote: "Everything should be made as simple as possible, but not simpler.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Simplify things as much as you can to make them clear and understandable, but don't oversimplify so much that you lose important details or accuracy."
+            },
+            {
+                quote: "There are no passengers on spaceship Earth. We are all crew.",
+                author: "Marshall McLuhan",
+                field: "Media Theory",
+                explanation: "Everyone on Earth has a responsibility to take care of our planet. We're not just along for the ride—we all have a role to play in Earth's future."
+            },
+            {
+                quote: "The most exciting phrase to hear in science, the one that heralds new discoveries, is not 'Eureka!' but 'That's funny...'",
+                author: "Isaac Asimov",
+                field: "Science Fiction/Science",
+                explanation: "Big discoveries often start when something unexpected happens and a scientist notices it's odd. Being curious about strange results leads to breakthroughs more than shouting 'Eureka!'"
+            },
+            {
+                quote: "Mathematics, rightly viewed, possesses not only truth, but supreme beauty.",
+                author: "Bertrand Russell",
+                field: "Philosophy/Mathematics",
+                explanation: "Mathematics isn't just about getting correct answers—when you truly understand it, you can see the elegance and beauty in mathematical patterns and relationships."
+            },
+            {
+                quote: "The cure for boredom is curiosity. There is no cure for curiosity.",
+                author: "Dorothy Parker",
+                field: "Literature",
+                explanation: "If you're bored, being curious about something will fix it. But curiosity itself is wonderfully incurable—once you start being curious, you'll always want to learn more."
+            },
+            {
+                quote: "To raise new questions, new possibilities, to regard old problems from a new angle, requires creative imagination.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Making progress in science isn't just about answering questions—it's about asking better questions and looking at old problems in fresh ways. This requires creativity and imagination."
+            },
+            {
+                quote: "All science is either physics or stamp collecting.",
+                author: "Ernest Rutherford",
+                field: "Nuclear Physics",
+                explanation: "Rutherford provocatively suggested that physics explains the fundamental 'why' of how things work, while other sciences just catalog and organize what they observe, like collecting stamps."
+            },
+            {
+                quote: "There is no law except the law that there is no law.",
+                author: "John Archibald Wheeler",
+                field: "Physics",
+                explanation: "At the deepest level of reality, even the laws of physics might not be fixed rules but emergent patterns. The only absolute might be that nothing is absolutely fixed."
+            },
+            {
+                quote: "Nature is pleased with simplicity, and nature is no dummy.",
+                author: "Isaac Newton",
+                field: "Classical Mechanics",
+                explanation: "Nature's solutions are elegant and simple, not unnecessarily complex. When we find the true explanation for something, it's usually simpler than we expected."
+            },
+            {
+                quote: "Mathematics is the music of reason.",
+                author: "James Joseph Sylvester",
+                field: "Mathematics",
+                explanation: "Just as music has harmony and rhythm that please our ears, mathematics has patterns and logic that satisfy our minds. Math is the beautiful language of logical thinking."
+            },
+            {
+                quote: "The scientist is not someone who gives the right answers, but the one who asks the right questions.",
+                author: "Claude Lévi-Strauss",
+                field: "Anthropology",
+                explanation: "Being a good scientist isn't about knowing everything—it's about asking smart questions that lead to discoveries. The quality of your questions determines the quality of your answers."
+            },
+            {
+                quote: "In theory, theory and practice are the same. In practice, they are not.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Ideas that work perfectly on paper don't always work the same way in real life. Theory gives us understanding, but practice reveals unexpected complications."
+            },
+            {
+                quote: "Science progresses one funeral at a time.",
+                author: "Max Planck",
+                field: "Quantum Mechanics",
+                explanation: "Sometimes old scientists refuse to accept new ideas that contradict their beliefs. Progress happens when the next generation of scientists, who grew up with new ideas, take over the field."
+            },
+            {
+                quote: "The greatest discovery of my generation is that human beings can alter their lives by altering their attitudes of mind.",
+                author: "William James",
+                field: "Psychology",
+                explanation: "You can change your life by changing how you think about it. Your attitude and perspective have tremendous power to shape your experiences and outcomes."
+            },
+            {
+                quote: "One of the strongest motives that lead men to art and science is escape from everyday life.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Many people pursue science and art because they offer an escape into worlds of beauty, wonder, and deep meaning that go beyond ordinary daily routines."
+            },
+            {
+                quote: "Nothing in biology makes sense except in the light of evolution.",
+                author: "Theodosius Dobzhansky",
+                field: "Genetics/Evolution",
+                explanation: "Evolution is the foundation that explains everything in biology. Without understanding evolution, biological facts seem random and disconnected. Evolution is the unifying principle."
+            },
+            {
+                quote: "If you can't explain it simply, you don't understand it well enough.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "True understanding means being able to explain complex ideas in simple terms. If you can only use complicated jargon, you probably don't fully grasp the concept yourself."
+            },
+            {
+                quote: "The good thing about science is that it's true whether or not you believe in it.",
+                author: "Neil deGrasse Tyson",
+                field: "Astrophysics",
+                explanation: "Scientific facts don't depend on belief or opinion. Gravity works, atoms exist, and the Earth orbits the Sun regardless of what anyone thinks."
+            },
+            {
+                quote: "In the depth of winter, I finally learned that within me there lay an invincible summer.",
+                author: "Albert Camus",
+                field: "Philosophy",
+                explanation: "Even in the darkest, hardest times, there's an inner strength and warmth inside you that can't be destroyed. You have resilience you might not know about until you need it."
+            },
+            {
+                quote: "Time is an illusion.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Einstein's relativity showed that time isn't a fixed, universal thing—it moves at different rates depending on speed and gravity. Our everyday sense of time is just how we experience it, not what it truly is."
+            },
+            {
+                quote: "The cosmos is within us. We are made of star-stuff. We are a way for the universe to know itself.",
+                author: "Carl Sagan",
+                field: "Astronomy",
+                explanation: "The atoms in our bodies came from ancient stars. Through us, the universe has developed consciousness and can observe and understand itself. We are the universe experiencing itself."
+            },
+            {
+                quote: "Life is not a problem to be solved, but a reality to be experienced.",
+                author: "Søren Kierkegaard",
+                field: "Philosophy",
+                explanation: "Don't treat life like a puzzle with one correct answer. Instead, embrace the journey, the feelings, and the experiences. Living fully is more important than finding solutions to everything."
+            },
+            {
+                quote: "The only source of knowledge is experience.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Real knowledge comes from doing, observing, and experiencing things firsthand—not just reading or hearing about them. Experience is the best teacher."
+            },
+            {
+                quote: "Energy cannot be created or destroyed, it can only be changed from one form to another.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "This is the law of conservation of energy. Energy never disappears—it just transforms. When you burn wood, chemical energy becomes heat and light. The total amount stays the same."
+            },
+            {
+                quote: "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+                author: "Nelson Mandela",
+                field: "Leadership/Politics",
+                explanation: "Success isn't about avoiding failure—everyone fails sometimes. True greatness comes from getting back up and continuing forward after each setback."
+            },
+            {
+                quote: "We live on an island surrounded by a sea of ignorance. As our island of knowledge grows, so does the shore of our ignorance.",
+                author: "John Archibald Wheeler",
+                field: "Physics",
+                explanation: "The more we learn, the more we realize how much we don't know. Each answer reveals new questions. Our expanding knowledge actually shows us there's even more to discover."
+            },
+            {
+                quote: "An investment in knowledge pays the best interest.",
+                author: "Benjamin Franklin",
+                field: "Science/Politics",
+                explanation: "Learning and education provide the best returns over time. Knowledge stays with you forever and creates opportunities that money alone cannot buy."
+            },
+            {
+                quote: "The greatest scientists are artists as well.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Great science requires creativity and imagination, just like art. The best scientists can envision possibilities, see patterns, and think creatively—they're artists of ideas."
+            },
+            {
+                quote: "Tell me and I forget. Teach me and I remember. Involve me and I learn.",
+                author: "Benjamin Franklin",
+                field: "Science/Politics",
+                explanation: "Hearing information is easily forgotten. Being taught helps you remember. But actively participating and doing things yourself is how you truly learn and understand."
+            },
+            {
+                quote: "Science is not only compatible with spirituality; it is a profound source of spirituality.",
+                author: "Carl Sagan",
+                field: "Astronomy",
+                explanation: "Understanding how vast, beautiful, and complex the universe is can create deep feelings of wonder and awe—feelings that are essentially spiritual. Science can inspire the same reverence as religion."
+            },
+            {
+                quote: "The beautiful thing about learning is that no one can take it away from you.",
+                author: "B.B. King",
+                field: "Music",
+                explanation: "Knowledge and skills you acquire belong to you forever. Unlike possessions that can be lost or stolen, what you learn stays with you no matter what happens."
+            },
+            {
+                quote: "The further a society drifts from truth, the more it will hate those who speak it.",
+                author: "George Orwell",
+                field: "Literature",
+                explanation: "When society accepts lies and misinformation, people who tell uncomfortable truths become unpopular. Speaking truth becomes harder in environments built on falsehoods."
+            },
+            {
+                quote: "Great spirits have always encountered violent opposition from mediocre minds.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "People with revolutionary ideas often face harsh criticism from those who can't understand or accept change. Ordinary minds resist extraordinary thinking."
+            },
+            {
+                quote: "The only thing that interferes with my learning is my education.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Sometimes formal schooling with its rigid structure and memorization can actually hinder real learning and curiosity. True education should encourage thinking, not just following rules."
+            },
+            {
+                quote: "I would rather have questions that can't be answered than answers that can't be questioned.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "It's better to admit we don't know something and keep investigating than to accept dogmatic answers that we're not allowed to challenge. Questioning is essential to truth."
+            },
+            {
+                quote: "The first principle is that you must not fool yourself—and you are the easiest person to fool.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "We naturally want to believe we're right, which makes us biased. The hardest part of honest thinking is being critical of your own ideas and admitting when you're wrong."
+            },
+            {
+                quote: "Nature uses only the longest threads to weave her patterns, so each small piece of her fabric reveals the organization of the entire tapestry.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "The same basic principles run throughout all of nature. By studying one small part carefully, you can discover laws that apply everywhere in the universe."
+            },
+            {
+                quote: "What I cannot create, I do not understand.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "The deepest understanding comes from being able to build or recreate something yourself. If you can't make it from scratch, you probably don't fully understand how it works."
+            },
+            {
+                quote: "Physics is like sex: sure, it may give some practical results, but that's not why we do it.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "Feynman humorously suggests that physicists study nature primarily for the joy and excitement of discovery, not for practical applications. The thrill of understanding is the real reward."
+            },
+            {
+                quote: "The real problem in speech is not precise language. The problem is clear language.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "Using fancy technical words doesn't matter if people don't understand you. What matters is communicating your ideas clearly so others can grasp what you mean."
+            },
+            {
+                quote: "Science is the belief in the ignorance of experts.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "True science means questioning everything, even what experts say. Authority doesn't make something true—evidence does. Real scientists don't accept claims just because someone important said them."
+            },
+            {
+                quote: "Study hard what interests you the most in the most undisciplined, irreverent, and original manner possible.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "Learn about what fascinates you in your own unique way. Don't be limited by traditional methods or what you're 'supposed' to do. Follow your curiosity freely and creatively."
+            },
+            {
+                quote: "For a successful technology, reality must take precedence over public relations, for nature cannot be fooled.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "No amount of good marketing can make bad technology work. Nature follows its own laws—you can't trick physics or chemistry with clever words. Reality always wins."
+            },
+            {
+                quote: "Nobody ever figures out what life is all about, and it doesn't matter. Explore the world. Nearly everything is really interesting if you go into it deeply enough.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "Don't worry about finding life's ultimate meaning. Instead, dive deep into whatever interests you. Almost everything becomes fascinating when you really study it."
+            },
+            {
+                quote: "The imagination of nature is far, far greater than the imagination of man.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "Nature creates things more bizarre, beautiful, and complex than humans can dream up. Reality is stranger and more amazing than any fiction we can imagine."
+            },
+            {
+                quote: "It doesn't matter how beautiful your theory is, it doesn't matter how smart you are. If it doesn't agree with experiment, it's wrong.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "In science, experimental evidence is the final judge. Even the most elegant theory from the smartest person is worthless if experiments prove it false. Data beats opinions."
+            },
+            {
+                quote: "I was born not knowing and have had only a little time to change that here and there.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "We all start knowing nothing. Life is about learning bits and pieces along the way. Feynman remained humble, knowing that even after a lifetime of study, there's vastly more to learn."
+            },
+            {
+                quote: "Religion is a culture of faith; science is a culture of doubt.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "Religion asks you to believe without proof, while science asks you to doubt everything and only accept what evidence proves. They operate on opposite principles."
+            },
+            {
+                quote: "We are trying to prove ourselves wrong as quickly as possible, because only in that way can we find progress.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "Scientists actively try to disprove their own ideas. By finding flaws quickly, they can fix them and move closer to truth. Progress comes from eliminating wrong ideas."
+            },
+            {
+                quote: "The beauty of a flower is in knowing and understanding how its parts work together.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "Understanding the science behind something doesn't ruin its beauty—it enhances it. Knowing how a flower grows and functions makes it even more wonderful, not less."
+            },
+            {
+                quote: "Fall in love with some activity, and do it! Nobody ever figures out what life is all about, and it doesn't matter.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "Find something you're passionate about and pursue it enthusiastically. Don't worry about finding life's ultimate purpose—just engage fully with what excites you."
+            },
+            {
+                quote: "If you thought that science was certain—well, that is just an error on your part.",
+                author: "Richard Feynman",
+                field: "Physics",
+                explanation: "Science doesn't provide absolute certainty—it provides the best current understanding based on evidence. Scientific knowledge is always open to revision with new information."
+            },
+            {
+                quote: "The only real valuable thing is intuition.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "While logic and evidence are important, Einstein valued intuition—that gut feeling or sudden insight that guides you toward truth before you can fully explain why."
+            },
+            {
+                quote: "Genius is 1% talent and 99% percent hard work.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Success comes far more from persistent effort than from natural ability. Even the most talented person accomplishes nothing without dedication and hard work."
+            },
+            {
+                quote: "Black holes are where God divided by zero.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Black holes represent places where our mathematical understanding of physics breaks down and creates infinities—like dividing by zero. They're where the rules seem to stop making sense."
+            },
+            {
+                quote: "The mind that opens to a new idea never returns to its original size.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Once you learn something new or consider a different perspective, your mind expands permanently. You can't unlearn or go back to your previous limited understanding."
+            },
+            {
+                quote: "Any sufficiently advanced technology is indistinguishable from magic.",
+                author: "Arthur C. Clarke",
+                field: "Science Fiction",
+                explanation: "Technology that's far beyond what we understand looks like magic to us. To ancient people, smartphones would seem magical. What seems impossible today might be normal technology tomorrow."
+            },
+            {
+                quote: "The brain is wider than the sky.",
+                author: "Emily Dickinson",
+                field: "Poetry",
+                explanation: "The human mind can imagine and contain the entire universe within thought. Our consciousness and imagination are vast enough to comprehend everything we observe in the sky."
+            },
+            {
+                quote: "We are not students of some subject matter, but students of problems. And problems may cut right across the borders of any subject matter or discipline.",
+                author: "Karl Popper",
+                field: "Philosophy of Science",
+                explanation: "Real learning isn't about mastering one subject—it's about solving problems. Important problems don't fit neatly into categories like 'biology' or 'physics.' They require knowledge from many fields."
+            },
+            {
+                quote: "The greatest enemy of progress is not stagnation, but false progress.",
+                author: "Sydney J. Harris",
+                field: "Journalism",
+                explanation: "Moving in the wrong direction is worse than standing still. False progress wastes time and resources while making us think we're improving. Real progress requires moving in the right direction."
+            },
+            {
+                quote: "He who loves practice without theory is like the sailor who boards ship without a rudder and compass and never knows where he may cast.",
+                author: "Leonardo da Vinci",
+                field: "Art/Science/Engineering",
+                explanation: "Doing things without understanding the principles behind them is like sailing without navigation tools—you're just hoping you'll get somewhere good. Theory guides your practice toward goals."
+            },
+            {
+                quote: "The truth is rarely pure and never simple.",
+                author: "Oscar Wilde",
+                field: "Literature",
+                explanation: "Real truth is complex and nuanced. Simple, pure answers are usually oversimplifications. Reality has layers of complexity that don't fit into neat, simple explanations."
+            },
+            {
+                quote: "In the midst of chaos, there is also opportunity.",
+                author: "Sun Tzu",
+                field: "Military Strategy",
+                explanation: "When everything is chaotic and uncertain, smart people can find advantages. Chaos creates gaps and possibilities that don't exist in stable, predictable situations."
+            },
+            {
+                quote: "We choose to go to the moon not because it is easy, but because it is hard.",
+                author: "John F. Kennedy",
+                field: "Politics/Space Exploration",
+                explanation: "Kennedy said we pursue difficult challenges precisely because they're difficult—they push us to grow, innovate, and achieve what seems impossible. Hard goals bring out human greatness."
+            },
+            {
+                quote: "The universe is under no obligation to make sense to you.",
+                author: "Neil deGrasse Tyson",
+                field: "Astrophysics",
+                explanation: "Nature doesn't care if humans find it confusing or counterintuitive. The universe follows its own rules, and sometimes those rules seem strange to us. That's our problem, not nature's."
+            },
+            {
+                quote: "One machine can do the work of fifty ordinary men. No machine can do the work of one extraordinary man.",
+                author: "Elbert Hubbard",
+                field: "Philosophy",
+                explanation: "Machines are great at repetitive tasks but can't replace human creativity, innovation, and problem-solving. Extraordinary humans do things machines can't—they think in new ways."
+            },
+            {
+                quote: "The reasonable man adapts himself to the world; the unreasonable one persists in trying to adapt the world to himself. Therefore all progress depends on the unreasonable man.",
+                author: "George Bernard Shaw",
+                field: "Literature",
+                explanation: "People who accept things as they are don't change anything. Progress comes from stubborn people who refuse to accept the status quo and insist the world can be better."
+            },
+            {
+                quote: "The telephone is a good way to talk to people without having to offer them a drink.",
+                author: "Fran Lebowitz",
+                field: "Humor/Social Commentary",
+                explanation: "A humorous observation about technology creating social distance. The telephone lets us communicate without the traditional hospitality of face-to-face meetings."
+            },
+            {
+                quote: "Nature does not know extinction; all it knows is transformation.",
+                author: "Werner von Braun",
+                field: "Rocket Science",
+                explanation: "Nothing in nature truly disappears—it just changes form. Energy and matter transform but never vanish. Death in nature is just transformation into something else."
+            },
+            {
+                quote: "Look deep into nature, and then you will understand everything better.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Studying nature carefully reveals fundamental truths about how everything works. The patterns in nature teach us principles that apply to all areas of life and knowledge."
+            },
+            {
+                quote: "I am not afraid of an army of lions led by a sheep; I am afraid of an army of sheep led by a lion.",
+                author: "Alexander the Great",
+                field: "Military Leadership",
+                explanation: "Leadership matters more than individual strength. Even ordinary people become dangerous when led by someone extraordinary. Weak people with strong leadership beat strong people with weak leadership."
+            },
+            {
+                quote: "The dose makes the poison.",
+                author: "Paracelsus",
+                field: "Medicine/Toxicology",
+                explanation: "Almost anything can be harmful in large amounts, and many poisons are harmless in tiny amounts. The quantity matters more than the substance itself. Even water can kill you if you drink too much."
+            },
+            {
+                quote: "I can calculate the motion of heavenly bodies, but not the madness of people.",
+                author: "Isaac Newton",
+                field: "Classical Mechanics",
+                explanation: "Newton could predict how planets move with mathematical precision, but found human behavior unpredictable and irrational. Physics is easier to understand than psychology."
+            },
+            {
+                quote: "Space is big. Really big. You just won't believe how vastly, hugely, mind-bogglingly big it is.",
+                author: "Douglas Adams",
+                field: "Science Fiction/Comedy",
+                explanation: "Adams humorously emphasizes that space is so enormous it's beyond human comprehension. Our everyday experience of 'big' doesn't even begin to compare to the scale of the universe."
+            },
+            {
+                quote: "The more you know, the more you realize you know nothing.",
+                author: "Socrates",
+                field: "Philosophy",
+                explanation: "Learning reveals how vast and complex the world is. As your knowledge grows, you become aware of how much more there is to learn. Wisdom includes recognizing your own ignorance."
+            },
+            {
+                quote: "Computers are useless. They can only give you answers.",
+                author: "Pablo Picasso",
+                field: "Art",
+                explanation: "Picasso suggests computers lack creativity and can't ask the important questions. They're tools for calculation, but human creativity, intuition, and questioning are what drive real innovation."
+            },
+            {
+                quote: "Innovation distinguishes between a leader and a follower.",
+                author: "Steve Jobs",
+                field: "Technology/Business",
+                explanation: "Leaders create new things and new ways of doing things. Followers just copy what leaders do. The ability to innovate is what separates those who lead from those who follow."
+            },
+            {
+                quote: "The human brain is an incredible pattern-matching machine.",
+                author: "Jeff Bezos",
+                field: "Technology/Business",
+                explanation: "Our brains evolved to recognize patterns—from finding food to predicting danger. This ability to see patterns and connections is humanity's superpower for learning and innovation."
+            },
+            {
+                quote: "I have no special talents. I am only passionately curious.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Einstein credited his success not to genius but to intense curiosity. He succeeded because he never stopped asking questions and wanting to understand how things work."
+            },
+            {
+                quote: "Discovery consists of seeing what everybody has seen and thinking what nobody has thought.",
+                author: "Albert Szent-Györgyi",
+                field: "Medicine/Biochemistry",
+                explanation: "Everyone observes the same world, but discoveries come from thinking about observations in new ways. The data is available to everyone—the breakthrough is thinking about it differently."
+            },
+            {
+                quote: "The difficulty lies not so much in developing new ideas as in escaping from old ones.",
+                author: "John Maynard Keynes",
+                field: "Economics",
+                explanation: "The biggest obstacle to innovation isn't creating new concepts—it's letting go of what we already believe. Old ideas and habits trap our thinking and prevent us from seeing new possibilities."
+            },
+            {
+                quote: "Act as if what you do makes a difference. It does.",
+                author: "William James",
+                field: "Psychology/Philosophy",
+                explanation: "Your actions matter more than you think. Even small choices create ripples that affect others and shape the world. Don't underestimate your individual impact."
+            },
+            {
+                quote: "The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.",
+                author: "Albert Einstein",
+                field: "Modern Physics",
+                explanation: "Our reality is shaped by how we think. To change the world around us, we must first change our own thoughts, beliefs, and perspectives. External change starts internally."
+            },
+            {
+                quote: "In every walk with nature one receives far more than he seeks.",
+                author: "John Muir",
+                field: "Naturalism/Conservation",
+                explanation: "Spending time in nature gives unexpected benefits beyond what you're looking for. Nature provides peace, inspiration, wisdom, and perspective we didn't know we needed."
+            },
+            {
+                quote: "A mind needs books as a sword needs a whetstone, if it is to keep its edge.",
+                author: "George R.R. Martin",
+                field: "Literature",
+                explanation: "Just as a sword becomes dull without sharpening, your mind becomes dull without intellectual stimulation. Reading books keeps your thinking sharp and effective."
+            },
+            {
+                quote: "The way to get started is to quit talking and begin doing.",
+                author: "Walt Disney",
+                field: "Entertainment/Business",
+                explanation: "Planning and discussing are important, but at some point you need to stop talking about ideas and actually start working on them. Action creates results, not endless discussion."
+            },
+            {
+                quote: "Knowing is not enough; we must apply. Willing is not enough; we must do.",
+                author: "Johann Wolfgang von Goethe",
+                field: "Literature/Science",
+                explanation: "Knowledge without action is worthless. Having good intentions isn't enough either. What matters is taking concrete action and actually doing something with what you know."
+            },
+            {
+                quote: "The scientist does not study nature because it is useful to do so. He studies it because he takes pleasure in it.",
+                author: "Henri Poincaré",
+                field: "Mathematics/Physics",
+                explanation: "The best scientists aren't motivated by practical benefits—they study nature because understanding it brings them joy. Curiosity and wonder are stronger motivators than usefulness."
+            },
+            {
+                quote: "Somewhere, something incredible is waiting to be known.",
+                author: "Sharon Begley",
+                field: "Science Journalism",
+                explanation: "Amazing discoveries are still out there waiting to be found. This thought should inspire us to keep exploring, learning, and investigating the mysteries around us."
+            },
+            {
+                quote: "The scientist only imposes two things, namely truth and sincerity, imposes them upon himself and upon other scientists.",
+                author: "Erwin Schrödinger",
+                field: "Quantum Physics",
+                explanation: "Scientists must be honest with themselves and others. The foundation of science is truthful reporting and sincere investigation—without these, science cannot function."
+            },
+            {
+                quote: "The eye sees only what the mind is prepared to comprehend.",
+                author: "Robertson Davies",
+                field: "Literature",
+                explanation: "We notice and understand only what we already have some framework for. Your existing knowledge and expectations shape what you're able to perceive and make sense of."
+            },
+            {
+                quote: "The greatest threat to our planet is the belief that someone else will save it.",
+                author: "Robert Swan",
+                field: "Environmental Activism",
+                explanation: "If everyone thinks someone else will solve environmental problems, no one will act. Change requires individual responsibility—we can't wait for others to fix things."
+            },
+            {
+                quote: "Philosophy is written in this grand book—I mean the universe—which stands continually open to our gaze.",
+                author: "Galileo Galilei",
+                field: "Astronomy",
+                explanation: "The universe itself is like a book containing all truth and knowledge. It's always there for us to read and study. Understanding nature is like reading the greatest book ever written."
+            },
+            {
+                quote: "We are all in the gutter, but some of us are looking at the stars.",
+                author: "Oscar Wilde",
+                field: "Literature",
+                explanation: "Everyone faces difficulties and struggles (the gutter), but some people maintain hope and wonder by focusing on beautiful possibilities (the stars). Perspective matters even in hard times."
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function displayQuote(index) {
+            const q = quotes[index];
+            const card = document.getElementById('quoteCard');
+            card.innerHTML = `
+                <div class="quote-text">${q.quote}</div>
+                <div class="author">— ${q.author}</div>
+                <div class="field">${q.field}</div>
+                <div class="explanation">
+                    <strong>Plain English:</strong> ${q.explanation}
+                </div>
+            `;
+            document.getElementById('counter').textContent = `Quote ${index + 1} of ${quotes.length}`;
+        }
+
+        function nextQuote() {
+            currentIndex = (currentIndex + 1) % quotes.length;
+            displayQuote(currentIndex);
+        }
+
+        function previousQuote() {
+            currentIndex = (currentIndex - 1 + quotes.length) % quotes.length;
+            displayQuote(currentIndex);
+        }
+
+        function randomQuote() {
+            currentIndex = Math.floor(Math.random() * quotes.length);
+            displayQuote(currentIndex);
+        }
+
+        // Display first quote on load
+        displayQuote(currentIndex);
+    </script>
+</body>
+</html>
